@@ -1,0 +1,6 @@
+myserver.ch {
+ root * /static
+ file_server
+
+ tls /etc/caddy/certs/myserver.pem /etc/caddy/certs/myserver.key
+}
