@@ -1,0 +1,17 @@
+myserver.ch {
+ root * /static
+ file_server
+
+ handle_path /shiny/* {
+    # Strip the /shiny prefix and proxy the request to Shiny Server
+    reverse_proxy localhost:3838
+  }
+
+  handle_path /shiny-test/* {
+    # Strip the /shiny-test prefix and proxy the request to the test Shiny Server
+    reverse_proxy localhost:3839
+  }
+
+# if Caddy does not take care of it
+ tls /etc/caddy/certs/myserver.pem /etc/caddy/certs/myserver.key
+}

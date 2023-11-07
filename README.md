@@ -50,7 +50,10 @@ sudo useradd --system --shell /usr/bin/nologin apprunner
 sudo visudo
 ```
 Add for each script
-**yourusername ALL=(apprunner) NOPASSWD: /usr/bin/local/start_caddy.sh**
+```log
+yourusername ALL=(apprunner) NOPASSWD: /usr/bin/local/start_caddy.sh
+yourusername ALL=(apprunner) NOPASSWD: /usr/bin/local/start_shiny.sh
+```
 
 ## Caddy
 ### Caddy Directories
@@ -88,4 +91,54 @@ sudo chmod 770 /usr/bin/local/start_caddy.sh
 Run the script as **dockeruser**
 ```shell
 sudo -u dockeruser sh /usr/bin/local/start_caddy.sh
+```
+
+## Shiny-Server
+#### Directory structure on host
+Move the index-app from this repo to **/srv/shiny/apps** and **/srv/shiny/apps_dev**
+```log
+/srv/shiny
+|-- apps
+|   |-- app1
+|   |   |-- app.R (or ui.R/server.R)
+|   |-- app2
+|   |   |-- app.R (or ui.R/server.R)
+|   |-- index
+|       |-- app.R (or ui.R/server.R)
+|
+|-- apps_dev
+|   |-- app1
+|   |   |-- app.R (or ui.R/server.R)
+|   |-- app2
+|   |   |-- app.R (or ui.R/server.R)
+|   |-- index
+|       |-- app.R (or ui.R/server.R)
+|
+|-- shiny-server.conf
+```
+* **/srv/shiny/apps**: This directory contains the production-ready Shiny applications. Each app has its own directory (e.g., app1, app2), and inside each app directory is the app.R file (or both ui.R and server.R if you're using the two-file structure).
+* **/srv/shiny/apps_dev**: This directory holds the development versions of the Shiny applications. The structure mirrors the production apps directory.
+* **/srv/shiny/index**: The app containing the index landing page to reach all apps.
+* **/srv/shiny/apps_dev/index**: Similar to the production index, this would be your landing page or directory listing for development apps.
+* **/srv/shiny/shiny-server.conf**: The Shiny Server configuration file.
+
+#### Build the docker image
+* in the Dockerfile, adapt
+  * the R libraries to install
+  * the user id and group id to match the docker host
+* assuming from this repo directory
+```shell
+cd shiny
+docker build -t sorcshinyimage .
+```
+_TODO: set up own docker registry_
+#### Run the shiny-server docker
+Change the permissions for the start script in the same way as for caddy and run the script as **dockeruser**
+```shell
+sudo -u dockeruser sh /usr/bin/local/start_shiny_prod.sh
+```
+
+#### Restart only the shiny server, e.g. after changing the config
+```shell
+docker exec -it shiny-prod sudo systemctl restart shiny-server
 ```
