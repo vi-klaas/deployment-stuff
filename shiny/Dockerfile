@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
 # Install R packages
 RUN R -e "install.packages(c('shinydashboard', 'httr', 'REDCapR', 'thematic', 'bslib', 'readxl', 'writexl'), repos='https://cran.rstudio.com/')"
 
-
 # Expose the port Shiny is running on
 EXPOSE 3838
 

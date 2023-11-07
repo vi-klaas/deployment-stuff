@@ -93,6 +93,7 @@ Run the script as **dockeruser**
 sudo -u dockeruser sh /usr/bin/local/start_caddy.sh
 ```
 
+
 ## Shiny Apps
 ### Shiny Server
 #### Directory structure on host
@@ -106,7 +107,6 @@ Move the index-app from this repo to **/srv/shiny/apps** and **/srv/shiny/apps_d
 |   |   |-- app.R (or ui.R/server.R)
 |   |-- index
 |       |-- app.R (or ui.R/server.R)
-|
 |-- apps-test
 |   |-- app1
 |   |   |-- app.R (or ui.R/server.R)
@@ -129,6 +129,7 @@ Move the index-app from this repo to **/srv/shiny/apps** and **/srv/shiny/apps_d
   * the user id and group id to match the docker host
 * assuming from this repo directory
 * on mac, include option --platform linux/amd64
+
 ```shell
 cd shiny
 docker build -t sorcshinyimage .
@@ -145,6 +146,7 @@ sudo -u dockeruser sh /usr/bin/local/start_shiny_prod.sh
 docker exec -it shiny-prod sudo systemctl restart shiny-server
 ```
 
+
 ### Deploying Shiny Apps
 
 Use the script deploy_shiny
@@ -155,5 +157,5 @@ Use the script deploy_shiny
 # this will deploy to /srv/shiny/apps-test/myapp
 ./deploy_shiny.sh myapp git@github.com:username/myapp.git test
 
-
 ```
+
