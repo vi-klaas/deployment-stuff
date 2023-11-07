@@ -1,5 +1,5 @@
 # Start from the R Shiny server image
-FROM rocker/shiny:latest
+FROM rocker/shiny-verse:4.3.2
 
 # Create a new user 'apprunner' and group 'apprunner'
 RUN groupadd -g 1111 apprunner && useradd -r -u 1111 -g apprunner apprunner
@@ -13,8 +13,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install R packages
-RUN R -e "install.packages(c('shinydashboard', 'renv', 'tidyverse'), repos='https://cran.rstudio.com/')"
-
+RUN R -e "install.packages(c('shinydashboard', 'httr', 'REDCapR', 'thematic', 'bslib', 'readxl', 'writexl'), repos='https://cran.rstudio.com/')"
 
 # Expose the port Shiny is running on
 EXPOSE 3838
