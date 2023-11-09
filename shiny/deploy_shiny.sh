@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage
-# ./deploy_shiny.sh app_name git_repo_name [test|prod]
+  # ./deploy_shiny.sh app_name git_repo_name [test|prod]
 
 APP_NAME="$1"
 GIT_REPO="$2"
@@ -20,9 +20,13 @@ fi
 
 # Check if the application directory exists, if not, clone the repo
 if [ ! -d "$APP_DIR/$APP_NAME" ]; then
-    git clone "$GIT_REPO" "$APP_DIR/$APP_NAME"
+    sudo git clone "$GIT_REPO" "$APP_DIR/$APP_NAME"
 else
     # If the directory exists, pull the latest changes
     cd "$APP_DIR/$APP_NAME" || exit
-    git pull origin "$GIT_BRANCH"
+    sudo git pull origin "$GIT_BRANCH"
 fi
+
+# Run the chown, chmod, and chgrp commands to set the permissions
+# as in set_permissions_dockermounts.sh
+sudo /usr/local/bin/set_permissions_dockermounts.sh "$APP_DIR/$APP_NAME"
