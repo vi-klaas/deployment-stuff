@@ -160,7 +160,6 @@ Run the script as **dockeruser**
 sudo -u dockeruser sh /usr/bin/local/start_caddy.sh
 ```
 
-
 ## Shiny Apps
 ### Shiny Server
 #### Directory structure on host
