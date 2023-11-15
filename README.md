@@ -2,7 +2,8 @@
 This repository helps to reproduce server setup and deployment
 
 ## Docker
-Installing Docker on Debian
+
+### Installing Docker on Debian
 #### Update the apt package index:
 ```shell
 sudo apt-get update
@@ -33,7 +34,13 @@ sudo docker run hello-world
 This will add the correct Docker repository for Debian Bookworm and then install Docker. Be sure to have sudo privileges to execute these commands.
 Also, always ensure that you're using the correct repository for your Linux distribution and version to avoid such issues.
 
+### Create a docker network
+that is used for container communication
+```shell
+docker network create --driver bridge sorc_network
+```
 
+Use this network name with the option **--network sorc_network** when starting docker container.
 ## Users and groups
 ### Users and their purpose:
 * admin-user
@@ -171,22 +178,20 @@ Move the index-app from this repo to **/srv/shiny/apps** and **/srv/shiny/apps_d
 |   |   |-- app.R (or ui.R/server.R)
 |   |-- app2
 |   |   |-- app.R (or ui.R/server.R)
-|   |-- index
-|       |-- app.R (or ui.R/server.R)
+|
 |-- apps-test
 |   |-- app1
 |   |   |-- app.R (or ui.R/server.R)
 |   |-- app2
 |   |   |-- app.R (or ui.R/server.R)
-|   |-- index
-|       |-- app.R (or ui.R/server.R)
 |
 |-- shiny-server.conf
 ```
 * **/srv/shiny/apps**: This directory contains the production-ready Shiny applications. Each app has its own directory (e.g., app1, app2), and inside each app directory is the app.R file (or both ui.R and server.R if you're using the two-file structure).
 * **/srv/shiny/apps-test**: This directory holds the development/testing versions of the Shiny applications. The structure mirrors the production apps directory.
-* **/srv/shiny/index**: The app containing the index landing page to reach all apps.
 * **/srv/shiny/apps-test/index**: Similar to the production index, this would be your landing page or directory listing for development apps.
+* **/srv/shiny/log**: This directory contains the log files written by the Shiny Server.
+* **/srv/shiny/log-test**: This directory contains the log files written by the Shiny Test Server.
 * **/srv/shiny/shiny-server.conf**: The Shiny Server configuration file.
 
 If not existing, create the directories
@@ -194,6 +199,8 @@ If not existing, create the directories
 sudo mkdir /srv/shiny
 sudo mkdir /srv/shiny/apps
 sudo mkdir /srv/shiny/apps-test
+sudo mkdir /srv/shiny/log
+sudo mkdir /srv/shiny/log-test
 ```
 Copy from this repo the index and example app and shiny-server config
 ```shell
@@ -207,13 +214,13 @@ sudo cp mini-example /srv/shiny/apps-test/
 #### Build the docker image
 * in the Dockerfile, adapt
   * the R libraries to install
-  * the user id and group id to match the docker host
+  * the **user id** and **group id** to match the docker host
 * assuming from this repo directory
 * on mac, include option **--platform linux/amd64**
 
 ```shell
 cd shiny
-docker build -t sorcshinyimage .
+docker build -t sorc_shiny_image .
 ```
 _TODO: set up own docker registry, instead of building containers on this server_
 
