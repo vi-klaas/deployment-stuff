@@ -10,7 +10,7 @@ HOST_MEDIA_PATH="/srv/caddy/media"
 HOST_STATIC_PATH="/srv/caddy/static"
 
 # Run Caddy Docker container with mounted certificates
-docker run -d --name sorccaddy -p 80:80 -p 443:443 \
+docker run -d --name sorccaddy --network sorc_network -p 80:80 -p 443:443 \
   --restart unless-stopped \
   -v $HOST_CERTS_PATH:$CONTAINER_CERTS_PATH \
   -v $HOST_CADDYFILE_PATH:/etc/caddy/Caddyfile:ro \
