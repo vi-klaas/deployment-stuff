@@ -3,6 +3,21 @@ myserver.ch {
  root * /static
  file_server
 
+ # ******** MEDIA ****************
+  handle_path /media/* {
+      root * /media
+      file_server
+    }
+
+  # ******** DJANGO APP (API/ADMIN) *************
+  @django {
+    path /api/* /admin/* /anything-but-admin/*
+  }
+
+  reverse_proxy @django {
+    to web:8000
+  }
+
  # ******** SHINY **************
  handle_path /shiny/* {
     # Strip the /shiny prefix and proxy the request to Shiny Server
