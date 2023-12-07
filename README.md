@@ -252,3 +252,22 @@ sudo /usr/local/bin/deploy_shiny.sh myapp git@github.com:username/myapp.git prod
 # this will deploy to /srv/shiny/apps-test/myapp
 sudo /usr/local/bin/deploy_shiny.sh myapp git@github.com:username/myapp.git test
 ```
+
+## Django
+### Django Directories
+```log
+/srv/django
+|-- .env.prod
+|-- .env.test
+|-- docker-compose.prod.yml
+|-- docker-compose.test.yml
+```
+### Start the production server
+```shell
+sudo /usr/local/bin/start_django.sh
+```
+
+### Start the test server
+```shell
+sudo /usr/local/bin/start_django.sh --docker-image-tag=test-image --docker-compose-file=/srv/django/docker-compose.test.yml
+```
