@@ -2,6 +2,7 @@
 
 # Define the path to django related directories
 DOCKER_COMPOSE_FILE_PATH="/srv/django/docker-compose.prod.yml"
+DOCKER_ENV_FILE_PATH="/srv/django/.env.prod"
 
 # Set default value for the image tag if argument is not supplied
 DOCKER_IMAGE_TAG="ghcr.io/vi-klaas/red_companion:latest"
@@ -10,6 +11,10 @@ DOCKER_IMAGE_TAG="ghcr.io/vi-klaas/red_companion:latest"
 for arg in "$@"
 do
     case $arg in
+        --docker-env-file=*)
+        DOCKER_ENV_FILE_PATH="${arg#*=}"
+        shift # Remove --docker-image-tag= from processing
+        ;;
         --docker-image-tag=*)
         DOCKER_IMAGE_TAG="${arg#*=}"
         shift # Remove --docker-image-tag= from processing
@@ -25,8 +30,8 @@ do
 done
 
 # Pull the latest image from registry
-docker pull "$DOCKER_IMAGE_TAG"
+#docker pull "$DOCKER_IMAGE_TAG"
 
 # Use docker-compose to start up the Django service
-docker compose -f "$DOCKER_COMPOSE_FILE_PATH" pull
-docker compose -f "$DOCKER_COMPOSE_FILE_PATH" up -d
+#docker compose -f "$DOCKER_COMPOSE_FILE_PATH" pull
+docker compose -f "$DOCKER_COMPOSE_FILE_PATH" --env-file "$DOCKER_ENV_FILE_PATH" up -d
