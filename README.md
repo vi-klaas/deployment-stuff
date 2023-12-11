@@ -267,6 +267,25 @@ sudo /usr/local/bin/deploy_shiny.sh myapp git@github.com:username/myapp.git test
 sudo /usr/local/bin/start_django.sh
 ```
 
+### create superuser
+```shell
+docker exec django-web-service-name python manage.py createsuperuser
+```
+
+#### Debug
+```shell
+docker run -it --entrypoint /bin/bash your-image-nam
+```
+
+```shell
+docker create --name temp django-web-1
+docker cp temp:/code/ .
+docker rm temp
+
+docker inspect your-image-name
+docker history your-image-name
+```
+
 ### Start the test server
 ```shell
 sudo /usr/local/bin/start_django.sh --docker-image-tag=test-image --docker-compose-file=/srv/django/docker-compose.test.yml

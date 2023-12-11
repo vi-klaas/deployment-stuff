@@ -1,13 +1,21 @@
 myserver.ch {
- # ******** STATIC *************
- root * /static
- file_server
+        # ******** STATIC *************
+        handle_path /static/* {
+                root * /static
+                file_server
+        }
 
- # ******** MEDIA ****************
-  handle_path /media/* {
-      root * /media
-      file_server
-    }
+        root * /static
+        file_server
+
+        # ******** MEDIA *************
+        handle_path /media/* {
+                root * /media
+                file_server
+        }
+
+
+
 
   # ******** DJANGO APP (API/ADMIN) *************
   @django {
