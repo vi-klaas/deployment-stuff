@@ -290,3 +290,15 @@ docker history your-image-name
 ```shell
 sudo /usr/local/bin/start_django.sh --docker-image-tag=test-image --docker-compose-file=/srv/django/docker-compose.test.yml
 ```
+
+## Vue
+### Vue Directories
+Vue is directly deployed to the static files served by the caddy server.
+It is important to match the directory path in the caddy file with the base path in the vue.config.js file.
+
+To deploy a new version of the vue app, 
+* pull the docker image
+* run the deployment script
+```shell
+/usr/local/bin/deploy_vue.sh"
+```
