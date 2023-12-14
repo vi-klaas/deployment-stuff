@@ -5,16 +5,21 @@ myserver.ch {
                 file_server
         }
 
-        root * /static
-        file_server
-
         # ******** MEDIA *************
         handle_path /media/* {
                 root * /media
                 file_server
         }
 
+        # ******** VUE ****************
+        @redScout path /red-scout
+        rewrite @redScout /red-scout/
 
+        handle /red-scout/* {
+                root * /static/red-scout-vue-dist-latest
+                try_files {path} /red-scout/index.html
+                file_server
+        }
 
 
   # ******** DJANGO APP (API/ADMIN) *************
@@ -37,6 +42,10 @@ myserver.ch {
     # Strip the /shiny-test prefix and proxy the request to the test Shiny Server
     reverse_proxy shiny_test:3838
  }
+
+         # ********* FALLBACK root and file server for other static files
+        root * /static
+        file_server
 
  # ******** SSL ****************
  # if Caddy does not take care of ssl
