@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install R packages
-RUN R -e "install.packages(c('renv','shinydashboard', 'httr', 'REDCapR', 'thematic', 'bslib', 'readxl', 'writexl'), repos='https://cran.rstudio.com/')"
+RUN R -e "install.packages(c('renv','shinydashboard', 'httr', 'REDCapR', 'thematic', 'bslib', 'readxl', 'writexl', 'dotenv', 'DT'), repos='https://cran.rstudio.com/')"
 
 # Change ownership and permissions of necessary directories
 RUN mkdir -p /var/lib/shiny-server/bookmarks && \
